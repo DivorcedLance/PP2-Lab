@@ -64,3 +64,15 @@ Criterios de paralelismo
 - **Barrier synchronization**: Permite que un conjunto de tareas se sincronicen en un punto específico antes de 
 
 
+
+
+
+
+
+
+Actor model para calcular --
+Serie Leibniz
+
+- Mìnimo de 500 000 terminos
+- 100 esclavos
+- En el main poner los integrantes
