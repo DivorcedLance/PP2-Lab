@@ -5,42 +5,27 @@ import akka.actor.Props;
 import akka.actor.UntypedAbstractActor;
 
 public class Sumador extends UntypedAbstractActor {
-    
-    private static final int n = 100000;
-    private double arreglo[];
+
+    private static final int n = 500000; // número de términos de la serie de Leibniz
     private ActorRef maestro;
-    
+
     private void crearMaestro() {
         maestro = getContext().actorOf(Props.create(Maestro.class));
-    }
-    
-    private void instanciarArreglo() {
-        arreglo = new double[n];
-        for (int i = 0; i < n; i++) {
-            arreglo[i] = Math.random();
-        }
-    }
-
-    @Override
-    public void postStop() throws Exception {
-        super.postStop(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
     }
 
     @Override
     public void preStart() throws Exception {
-        super.preStart(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-        instanciarArreglo();
+        super.preStart();
         crearMaestro();
-        maestro.tell(10, getSelf());
-        maestro.tell(new Maestro.Mensaje(arreglo), getSelf());
+        maestro.tell(100, getSelf()); // Número de esclavos
+        maestro.tell(new Maestro.IniciarCalculo(n), getSelf()); // Iniciar cálculo con n términos
     }
-    
+
     @Override
-    public void onReceive(Object message) throws Throwable {
-        if (message instanceof Long) {
-            System.out.println("El total es: " + (long)message);
+    public void onReceive(Object message) {
+        if (message instanceof Double) {
+            System.out.println("El valor aproximado de π es: " + (double) message);
             getContext().getSystem().terminate();
         }
     }
-    
 }
